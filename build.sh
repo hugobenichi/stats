@@ -1,5 +1,7 @@
 #/bin/bash
 
+set -eux
+
 source ./setup.sh
 
-go install all
+go install -v all
