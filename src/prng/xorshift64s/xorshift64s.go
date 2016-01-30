@@ -5,11 +5,11 @@ import (
 	"prng"
 )
 
-type XS64S uint64
+type G uint64
 
-func NewXS64S() XS64S { return 1 }
+func New() G { return 1 }
 
-func (r *XS64S) Next() uint64 {
+func (r *G) Next() uint64 {
 	u := *r
 
 	u ^= u >> 12
@@ -21,6 +21,6 @@ func (r *XS64S) Next() uint64 {
 	return uint64(u) * 2685821657736338717
 }
 
-func (r *XS64S) NextF() float64 {
+func (r *G) NextF() float64 {
 	return prng.Unit(r.Next())
 }

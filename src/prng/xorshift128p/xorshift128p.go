@@ -6,15 +6,15 @@ import (
 )
 
 // The xorshift128+ PRNG. Public fields for inspection and custom seeding.
-type XS128P struct {
+type G struct {
 	S0, S1 uint64
 }
 
-var xs128p_0 = XS128P{S0: 1, S1: 2}
+var xs128p_0 = G{S0: 1, S1: 2}
 
-func NewXS128P() XS128P { return xs128p_0 }
+func New() G { return xs128p_0 }
 
-func (r *XS128P) Next() uint64 {
+func (r *G) Next() uint64 {
 	s1, s0 := r.S0, r.S1 // swap intended
 
 	s1 ^= s1 << 23
@@ -27,6 +27,6 @@ func (r *XS128P) Next() uint64 {
 	return s0 + s1
 }
 
-func (r *XS128P) NextF() float64 {
+func (r *G) NextF() float64 {
 	return prng.Unit(r.Next())
 }

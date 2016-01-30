@@ -6,13 +6,13 @@ import (
 )
 
 // The xorshift1024* PRNG. Public fields allow inspection and custom seeding.
-type XS1024S struct {
+type G struct {
 	State [16]uint64
 	I     int
 }
 
-func NewXS1024S() XS1024S {
-	return XS1024S{
+func New() G {
+	return G{
 		State: [16]uint64{
 			// generated from XS128P after dropping first 10 outputs
 			10496030469740439798,
@@ -36,7 +36,7 @@ func NewXS1024S() XS1024S {
 	}
 }
 
-func (r *XS1024S) Next() uint64 {
+func (r *G) Next() uint64 {
 	var (
 		i  = r.I
 		j  = (i + 1) & 0xF
@@ -53,6 +53,6 @@ func (r *XS1024S) Next() uint64 {
 	return s1 * 1181783497276652981
 }
 
-func (r *XS1024S) NextF() float64 {
+func (r *G) NextF() float64 {
 	return prng.Unit(r.Next())
 }
