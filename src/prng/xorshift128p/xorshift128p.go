@@ -1,6 +1,10 @@
 // xorshift128p provides a PRNG of uint64 values.
 package xorshift128p
 
+import (
+	"prng"
+)
+
 // The xorshift128+ PRNG. Public fields for inspection and custom seeding.
 type XS128P struct {
 	S0, S1 uint64
@@ -21,4 +25,8 @@ func (r *XS128P) Next() uint64 {
 	r.S0, r.S1 = s0, s1
 
 	return s0 + s1
+}
+
+func (r *XS128P) NextF() float64 {
+	return prng.Unit(r.Next())
 }

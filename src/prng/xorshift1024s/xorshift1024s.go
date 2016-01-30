@@ -1,6 +1,10 @@
 // xorshift1024s provides a PRNG of uint64 values.
 package xorshift1024s
 
+import (
+	"prng"
+)
+
 // The xorshift1024* PRNG. Public fields allow inspection and custom seeding.
 type XS1024S struct {
 	State [16]uint64
@@ -47,4 +51,8 @@ func (r *XS1024S) Next() uint64 {
 	r.I = j
 
 	return s1 * 1181783497276652981
+}
+
+func (r *XS1024S) NextF() float64 {
+	return prng.Unit(r.Next())
 }

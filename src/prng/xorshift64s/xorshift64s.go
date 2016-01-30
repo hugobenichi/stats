@@ -1,6 +1,10 @@
 // xorshift64s provides a PRNG of uint64 values.
 package xorshift64s
 
+import (
+	"prng"
+)
+
 type XS64S uint64
 
 func NewXS64S() XS64S { return 1 }
@@ -15,4 +19,8 @@ func (r *XS64S) Next() uint64 {
 	*r = u
 
 	return uint64(u) * 2685821657736338717
+}
+
+func (r *XS64S) NextF() float64 {
+	return prng.Unit(r.Next())
 }

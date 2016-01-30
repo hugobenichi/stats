@@ -7,7 +7,7 @@ type UInt64 interface {
 
 // UInt64 is a pseudo-random number generator of float64 values in [0,1[
 type Float64 interface {
-	Next() float64
+	NextF() float64
 }
 
 var (
