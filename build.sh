@@ -2,6 +2,8 @@
 
 set -eux
 
-source ./setup.sh
+export GOPATH=$(pwd)
+
+gopath_is_defined=$GOPATH
 
 go install -v all
