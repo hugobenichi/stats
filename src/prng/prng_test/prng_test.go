@@ -3,6 +3,7 @@ package prng_testing
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"testing"
 
 	"prng"
@@ -25,6 +26,7 @@ func TestPRNG(t *testing.T) {
 		{"xorshift 64 star", xorshift64s.New()},
 		{"xorshift 128 plus", xorshift128p.New()},
 		{"xorshift 1024 star", xorshift1024s.New()},
+		{"standard prng", newStdPRNG()},
 	}
 
 	for _, tt := range tests {
@@ -48,7 +50,7 @@ func TestPRNG(t *testing.T) {
 func pi(g prng.Float64) float64 {
 	tot := 0.0
 	ins := 0.0
-	for i := 0; i < 400000; i++ {
+	for i := 0; i < 200000; i++ {
 		x, y := g.NextF(), g.NextF()
 		if x*x+y*y < 1 {
 			ins++
@@ -69,3 +71,32 @@ func sequences(g prng.UInt64) error {
 	}
 	return nil
 }
+
+func BenchmarkXS64S(b *testing.B)   { benchmarkPRNG(b, xorshift64s.New()) }
+func BenchmarkXS1024S(b *testing.B) { benchmarkPRNG(b, xorshift1024s.New()) }
+func BenchmarkXS128P(b *testing.B)  { benchmarkPRNG(b, xorshift128p.New()) }
+func BenchmarkStdPRNG(b *testing.B) { benchmarkPRNG(b, newStdPRNG()) }
+
+func benchmarkPRNG(b *testing.B, g prng.UInt64) {
+	for i := 0; i < b.N; i++ {
+		g.Next()
+	}
+}
+
+// BenchmarkStdPRNGInlined controls the cost of interface call and wrapping
+func BenchmarkStdPRNGInlined(b *testing.B) {
+	g := rand.NewSource(0)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		g.Int63()
+	}
+}
+
+// stdPRNG wraps a std lib math/rand.Source
+type stdPRNG struct {
+	rand.Source
+}
+
+func (s stdPRNG) Next() uint64   { return uint64(s.Int63()) }
+func (s stdPRNG) NextF() float64 { return prng.Unit(s.Next()) }
+func newStdPRNG() stdPRNG        { return stdPRNG{rand.NewSource(0)} }
