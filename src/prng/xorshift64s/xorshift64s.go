@@ -7,7 +7,10 @@ import (
 
 type G uint64
 
-func New() G { return 1 }
+func New() *G {
+	g := G(1)
+	return &g
+}
 
 func (r *G) Next() uint64 {
 	u := *r

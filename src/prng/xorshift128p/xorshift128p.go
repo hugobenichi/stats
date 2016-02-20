@@ -10,9 +10,9 @@ type G struct {
 	S0, S1 uint64
 }
 
-var xs128p_0 = G{S0: 1, S1: 2}
-
-func New() G { return xs128p_0 }
+func New() *G {
+	return &G{S0: 1, S1: 2}
+}
 
 func (r *G) Next() uint64 {
 	s1, s0 := r.S0, r.S1 // swap intended

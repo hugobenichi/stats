@@ -11,8 +11,8 @@ type G struct {
 	I     int
 }
 
-func New() G {
-	return G{
+func New() *G {
+	return &G{
 		State: [16]uint64{
 			// generated from XS128P after dropping first 10 outputs
 			10496030469740439798,

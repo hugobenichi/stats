@@ -10,12 +10,17 @@ type Float64 interface {
 	NextF() float64
 }
 
+type P interface {
+	UInt64
+	Float64
+}
+
 var (
 	f = 1. / (1 << 52)
 	m = uint64(1<<52) - 1
 )
 
-// Unit generates a float64 in the [0,1[ from the 52 low bits of an uint64.
+// Unit generates a float64 in [0,1[ from the 52 low bits of an uint64.
 func Unit(u uint64) float64 {
 	return float64(u&m) * f // has form N x 2 ^ -52 with N a 52 bits unsigned int.
 }
